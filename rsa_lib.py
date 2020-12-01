@@ -1,14 +1,14 @@
 import random
 import math as m
 #
-#
+# Simple, but certain, primality checker.
 def isPrime(n1):
   for x in range(2,n1):
     if n1%x==0:
       return False
   return True
 #
-#
+# Find a value N=P*Q such that P and Q are two randomly selected nonequal prime unbers in the range (mins, maxs).
 def findN(mins,maxs):
   primes = []
   for i in range(mins,maxs):
@@ -23,7 +23,7 @@ def findN(mins,maxs):
   n = p*q
   return n,p,q
 #
-#
+# Find the Euler's totient. Can be used with one input (n) or three inputs (n, p, q) where n=p*q and p,q are prime.
 def eulerT(n1,p=0,q=0):
   if (p!=0) and (q!=0):
     return (p-1)*(q-1)
@@ -34,7 +34,7 @@ def eulerT(n1,p=0,q=0):
       liste.append(x)
   return len(liste)
 #
-#
+# Generate a set of possible e and d values such that (n,e) and (n,d) are RSA-compliant keypairs. Allow user input to choose values of e.
 def findKeys(n,p=0,q=0):
   if p!=0 and q!=0:
     et=(p-1)*(q-1)
@@ -80,7 +80,7 @@ def findKeys(n,p=0,q=0):
       d=item
   return e,d,et
 #
-#
+# Given a range, create an RSA-compliant keypair ((n, e), (n, d)) such that n = p*q for some prime numbers p, q in range (minns, maxxs).
 def provideKeys(minns,maxxs):
   ne=findN(minns,maxxs)
   if ne=="X":
@@ -92,7 +92,7 @@ def provideKeys(minns,maxxs):
   print("private key:",prik,"\npublic key:",pubk)
   return prik,pubk
 #
-#
+# Turn a string into a list of integers corresponding to each character in the string.
 def convert1(str1):
   list1=[]
   for i in range(len(str1)):
@@ -103,7 +103,7 @@ def convert1(str1):
     list2.append(temp)
   return list2
 #
-#
+# Turn a list of integers into a string of characters representing each integer in the list. (inverse of convert1().)
 def convert2(list1):
   list2=[]
   for chara in list1:
@@ -113,7 +113,7 @@ def convert2(list1):
   print()
   return list2
 #
-#
+# Encrypt/decrypt a list of integers using an RSA-compliant keypair (n,key).
 def convert3(list1,n,key):
   list2=[]
   for pt in list1:
@@ -122,7 +122,11 @@ def convert3(list1,n,key):
     list2.append(temp)
   return list2
 #
-#
+# encrypt a list of integers list1 using RSA-compliant key (n1, key1).
+# 'sign' this list with a second RSA-compliant key (n2, key2),
+# and a second list of integers list2, preceded by the value of marker.
+# (signing an RSA message here means encrypting some second portion such that it can only be decrypted with a second key.
+# it is done to show that the sender has a certain private key, as their public key decodes the signed section.)
 def convert4a(list1,n1,key1,n2,key2,list2,marker=4):
   list2a=[]
   list3=[]
@@ -139,7 +143,8 @@ def convert4a(list1,n1,key1,n2,key2,list2,marker=4):
     list3.append(temp)
   return list3
 #
-#
+# decrypt a list of integers encrypted with RSA-compliante key (n1, key1), 
+# and signed with a message encrypted by key (n2, key2), seperated by the value of marker.
 def convert4b(list1,n1,key1,n2,key2,marker=4):
   list1a=[]
   list2a=[]
@@ -160,7 +165,7 @@ def convert4b(list1,n1,key1,n2,key2,marker=4):
   list3=list1a+list2a
   return list3
 #
-#
+# Receive a command-line input for a key, erroring gracefully on bad inputs.
 def take_Key():
   knock=True
   while (knock==True):
@@ -176,7 +181,7 @@ def take_Key():
       print("not a number. The key is always two numbers.")
   return key
 #
-#
+# apply the tabula recta simple encryption on a string str1, either encrypting if toggle or decrypting if not toggle.
 def tabulaRecta(str1,toggle):
   alphabet="abcdefghijklmnopqrstuvwxyz,./;'[]\`1234567890-= ~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?"
   list1=list(str1)
@@ -191,9 +196,9 @@ def tabulaRecta(str1,toggle):
   for pt in list1:
     for letter in list2:
       if letter[0]==pt:
-        if toggle==True:
+        if toggle: # ie if toggle is true
           ct=letter[1]+x
-        elif toggle==False:
+        elif not(toggle): # ie if toggle is false
           ct=letter[1]-x
         ct=ct%len(list2)
         list3.append(ct)
